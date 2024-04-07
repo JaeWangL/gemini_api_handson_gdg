@@ -4,7 +4,6 @@ from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 import vertexai
-import vertexai.preview.generative_models as generative_models
 from google.oauth2.service_account import Credentials
 import os
 
