@@ -5,10 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 import vertexai
 from google.oauth2.service_account import Credentials
+import base64
 import os
 
 from src.configs import config
-from src.gemini import get_ai_response_async
+from src.gemini_complete import gemini_with_image_async
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -59,8 +60,14 @@ async def web_app() -> HTMLResponse:
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket) -> NoReturn:
+    image_path = os.path.join(dir_path, '..', "assets", "image.png")
+    with open(image_path, 'rb') as original_image_file:
+        encoded_string = base64.b64encode(original_image_file.read()).decode('utf-8')
     await websocket.accept()
     while True:
         message = await websocket.receive_text()
-        async for text in get_ai_response_async(message):
+        #async for text in gemini_async(message):
+        #    await websocket.send_text(text)
+
+        async for text in gemini_with_image_async(message, image_base64_encoded=encoded_string):
             await websocket.send_text(text)
