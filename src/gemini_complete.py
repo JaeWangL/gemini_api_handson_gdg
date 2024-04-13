@@ -45,7 +45,11 @@ async def gemini_with_image_async(prompt: str, image_gcs: str|None=None, image_b
             mime_type="image/png"
         )
     response = await model_vision.generate_content_async(
-        [image, prompt],
+        [
+            "Image1: ", image,
+            "Image2: ", image,
+            "Instruction:", prompt
+        ],
         generation_config={
             "max_output_tokens": 2048,
             "stop_sequences": [

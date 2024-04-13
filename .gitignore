@@ -10,7 +10,7 @@ __pycache__/
 .conda
 
 # GCP Account
-*.json
+# *.json
 
 # Distribution / packaging
 .Python
